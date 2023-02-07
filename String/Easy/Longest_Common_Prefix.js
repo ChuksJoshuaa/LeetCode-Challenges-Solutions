@@ -1,35 +1,19 @@
-/*
-        Write a function to find the longest common prefix string amongst an array of strings.
-        If there is no common prefix, return an empty string "".
+// Leetcode: https://leetcode.com/problems/longest-common-prefix/
 
-        Example 1:
-                Input: strs = ["flower", "flow", "flight"]
-                Output: "fl"
-        
-        Example 2:
-                Input: strs = ["dog", "racecar", "car"]
-                Output: ""
-                Explanation: There is no common prefix among the input strings.
-
-        Constraints:
-                1) 1 <= strs.length <= 200
-                2) 0 <= strs[i].length <= 200
-                3) strs[i] consists of only lower-case English letters.
-*/
-
-/*
+/**
  * @param { string[] } strs
  * @return { string }
 */
 
+// SOLUTION 1
 var longestCommonPrefix = function( strs ) {
         strs = strs.sort( ( a, b ) => a.length - b.length );
-        var index =  0;
-        var word = strs[0];
+        let word = strs[0];
+
         while( word.length !== 0 ) {
                 let isLongestPrefix = true;
                 for( let i = 1; i < strs.length; i++ ) {
-                        if( !strs[i].startsWith(word) ) {
+                        if( strs[i].indexOf(word) !== 0 ) {
                                 isLongestPrefix = false;
                                 break;
                         }
@@ -37,7 +21,49 @@ var longestCommonPrefix = function( strs ) {
                 if( isLongestPrefix ) {
                         return word;
                 }
-                word = strs[0].slice(0, strs.length - index++);
+                word = strs[0].slice(0, word.length - 1);
         }
+
         return "";
+};
+
+// SOLUTION 2
+
+/**
+ * @param { string[] } strs
+ * @return { string }
+*/
+
+var longestCommonPrefix = function( strs ) {
+        strs.sort( (a, b) => a.length - b.length );
+        if( strs.length === 1 ) {
+                return strs[0];
+        }
+        if( strs[0] === "" ){
+                return "";
+        }
+        
+        let flag = true;
+        let index = 0;
+        let word = strs[0][index];
+        
+        while( flag ) {
+                for( let i = 1; i < strs.length; i++ ) {
+                        if( strs[i].indexOf(word) !== 0 ) {
+                                word = word.slice(0, word.length - 1);
+                                flag = false;
+                                break;
+                        }
+                }
+                if( flag ) {
+                        let character = strs[0][++index];
+                        if( character == null ) {
+                                break;
+                        } else {
+                                word += character;
+                        }
+                }
+        }
+
+        return word;
 };
